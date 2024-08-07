@@ -38,6 +38,9 @@ public class Cell {
         this.player = player;
     }
 
-    
+    public void displayCell(){
+        if(player==null) System.out.print("| |");
+        else System.out.print("|"+this.getPlayer().getSymbol().getSymbol()+"|");
+    }
     
 }
