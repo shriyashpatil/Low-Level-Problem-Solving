@@ -1,5 +1,6 @@
 package models;
 
+import exception.InvalidMoveException;
 import strategies.gamewinningstrategy.WinningStrategy;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class Game{
 
     private GameState gameState;
 
-    private int nextMovePlayerIndex;
+    private int nextMovePlayerIndex=0;
 
     private List<WinningStrategy> winningStrategies;
 
@@ -92,6 +93,72 @@ public class Game{
 
     public void printBoard(){
         this.board.printBoard();
+    }
+
+    private boolean validateMoveMethod(Move move){
+
+        int row = move.getCell().getRow();
+        int col = move.getCell().getCol();
+
+        if(row<0 || row> board.getDimension() || col<0 || col> board.getDimension()) return false;
+
+        if(board.getBoard().get(row).get(col).getCellState().equals(CellState.EMPTY)){
+            return false;
+        }
+
+        return true;
+    }
+
+    public void makeMove() throws InvalidMoveException {
+
+        Player currentPlayer = players.get(nextMovePlayerIndex);
+
+        System.out.println("This move is of : "+currentPlayer.getName());
+
+        Move move = currentPlayer.makeMove(board);
+
+        if(validateMoveMethod(move)){
+            /// throw some exception to user
+            throw new InvalidMoveException("Invalid Move,please retry");
+        }
+
+        int row = move.getCell().getRow();
+        int col = move.getCell().getCol();
+
+        Cell cell = board.getBoard().get(row).get(col);
+        cell.setCellState(CellState.FILLED);
+        cell.setPlayer(currentPlayer);
+
+        Move finalMove = new Move(cell,currentPlayer);
+        moves.add(finalMove);
+        nextMovePlayerIndex = (nextMovePlayerIndex+1)% players.size();
+
+        if(checkWinner(finalMove)){
+            winner = currentPlayer;
+            gameState = GameState.ENDED;
+        }else if(moves.size() == board.getDimension() * board.getDimension()){
+            winner = null;
+            gameState = GameState.DRAW;
+        }
+
+    }
+
+    private boolean checkWinner(Move move){
+        for(WinningStrategy winningStrategy : winningStrategies){
+            if(winningStrategy.checkWinner(board,move)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void undoMove(){
+        Cell cell = moves.get(moves.size()-1).getCell();
+        cell.setCellState(CellState.EMPTY);
+        cell.setPlayer(null);
+        nextMovePlayerIndex=(nextMovePlayerIndex+1)%players.size();
+        moves.remove(moves.size()-1);
+
     }
 
     public static Builder builder(){

@@ -5,30 +5,47 @@ import models.Cell;
 import models.Move;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class DiagonalWinnigStategy implements WinningStrategy{
 
-    private final HashMap<String, HashMap<Character,Integer>> daiMaps = new HashMap<>();
+    //2 Diagonals.
+    private final Map<Character, Integer> leftDiagonalMap = new HashMap<>(); //starting from 0,0
+    private final Map<Character, Integer> rightDiagonalMap = new HashMap<>(); //starting from 0,n-1
+
     @Override
     public boolean checkWinner(Board board, Move move) {
-        if(!checkDiagonalCell(board.getDimension(), move.getCell())) return false;
-        String dai = String.valueOf(move.getCell().getRow())+String.valueOf(move.getCell().getCol());
-        Character ch = move.getPlayer().getSymbol().getSymbol();
-        if(!daiMaps.containsKey(dai)){
-            daiMaps.put(dai,new HashMap<>());
+        int row = move.getCell().getRow();
+        int col = move.getCell().getCol();
+        Character aChar = move.getPlayer().getSymbol().getSymbol();
+
+        //Condition for left diagonal -> row == col
+        if (row == col) {
+            if (!leftDiagonalMap.containsKey(aChar)) {
+                leftDiagonalMap.put(aChar, 0);
+            }
+            leftDiagonalMap.put(aChar, leftDiagonalMap.get(aChar) + 1);
         }
 
-        if(!daiMaps.get(dai).containsKey(ch)){
-            daiMaps.get(dai).put(ch,1);
-        }else{
-            daiMaps.get(dai).put(ch,daiMaps.get(dai).get(ch)+1);
+        //Condition for right diagonal -> row + col == N-1
+        if (row + col == board.getDimension() - 1) {
+            if (!rightDiagonalMap.containsKey(aChar)) {
+                rightDiagonalMap.put(aChar, 0);
+            }
+            rightDiagonalMap.put(aChar, rightDiagonalMap.get(aChar) + 1);
         }
 
-        return daiMaps.get(dai).get(ch) == 3;
+        if (row == col && leftDiagonalMap.get(aChar) == board.getDimension()) {
+            return true;
+        }
+
+        if (row + col == board.getDimension() - 1 &&
+                rightDiagonalMap.get(aChar) == board.getDimension()) {
+            return true;
+        }
+
+        return false;
     }
 
-    public boolean checkDiagonalCell(int dimension, Cell cell){
-        if(dimension%2!=0) return cell.getCol()==cell.getCol();
-        return cell.getCol()== cell.getRow() || cell.getCol()+ cell.getRow()+1==dimension;
-    }
+
 }

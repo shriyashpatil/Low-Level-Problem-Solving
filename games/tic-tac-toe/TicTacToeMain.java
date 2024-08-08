@@ -29,7 +29,7 @@ public class TicTacToeMain {
                 PlayerType.HUMAN)
         );
 
-        players.add(new Player(new Symbol('O'),"EVA^",PlayerType.BOT));
+        players.add(new Bot(new Symbol('O'),"EVA^",PlayerType.BOT,BotDifficultyLevel.EASY));
 
         /// take strategies as input
         List<WinningStrategy> strategies = List.of(
@@ -57,9 +57,14 @@ public class TicTacToeMain {
                 gameController.undoMove(game);
             }
 
+            gameController.makeMove(game);
+
         }
 
-        /// Build the Game
+
+        if(gameController.getGameState(game).equals(GameState.ENDED)){
+            System.out.println(gameController.getWinner(game).getName()+ " has won !!!");
+        }
 
 
         System.out.println("END GAME");
