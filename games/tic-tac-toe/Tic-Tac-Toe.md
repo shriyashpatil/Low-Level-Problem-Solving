@@ -14,9 +14,9 @@
 - Bot can have difficulty
 - Q-> How many bots are allowed ? A-> Only 1 bot
 - Q-> How winner is decided
-- same symbol across col
-- same symbol across row
-- same symbol across diagonal
+  - same symbol across col
+  - same symbol across row
+  - same symbol across diagonal
 - Game ends as soon as someone wins or all blocks are filled
 - Player should able to undo the move
 
