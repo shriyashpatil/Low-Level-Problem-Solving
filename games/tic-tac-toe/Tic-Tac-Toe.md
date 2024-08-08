@@ -1,12 +1,12 @@
 # TIC TAC TOE 
 
-1. Overview
-    -
+Overview
+-
 
 - Game which we play on n*n grid, we also it as X-O game
 
-2. Requirement
-    -
+Requirement
+-
 - Size of the board can be NxN
 - Number of Players N-1
 - Every player can select the symbol at the start of the game { NO TWO PLAYER SHOULD HAVE SAME SYMBOL}
