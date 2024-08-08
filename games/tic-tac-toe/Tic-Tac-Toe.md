@@ -3,7 +3,7 @@
 Overview
 -
 
-- Game which we play on n*n grid, we also it as X-O game
+- Game which we play on n*n grid, we also call it as X-O game
 
 Requirement
 -
