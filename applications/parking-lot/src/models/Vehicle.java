@@ -4,7 +4,9 @@ public class Vehicle extends  BaseModel{
 
     private String number;
 
-    private Owner owner;
+    private String ownerName;
+
+
 
     private VehicleType vehicleType;
 
@@ -15,14 +17,14 @@ public class Vehicle extends  BaseModel{
     public void setNumber(String number) {
         this.number = number;
     }
-
-    public Owner getOwner() {
-        return owner;
+    public String getOwnerName() {
+        return ownerName;
     }
 
-    public void setOwner(Owner owner) {
-        this.owner = owner;
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
     }
+
 
     public VehicleType getVehicleType() {
         return vehicleType;
