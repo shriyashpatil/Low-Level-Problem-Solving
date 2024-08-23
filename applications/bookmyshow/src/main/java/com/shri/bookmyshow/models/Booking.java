@@ -1,6 +1,6 @@
 package com.shri.bookmyshow.models;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,11 +10,19 @@ import java.util.List;
 @Setter
 @Entity
 public class Booking extends BaseModel{
-    private String bookingNUmber;
+    private String bookingNumber;
+    @ManyToOne
     private User user;
+    @ManyToOne
     private Show show;
+
+    @ManyToMany
     private List<ShowSeat> showSeats;
     private double amount;
+
+    @OneToMany
     private List<Payment> payments;
+
+    @Enumerated(EnumType.ORDINAL)
     private BookingStatus bookingStatus;
 }
